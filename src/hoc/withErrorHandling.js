@@ -6,18 +6,22 @@ import Modal              from '../components/UI/Modal/Modal';
 const withErrorHandling = (WrappedComponent, axios) => (
     class extends Component {
 
-        state = {
-            error: null
-        }
-
-        componentDidMount() {
+        //constructor should be used instead of componentWillMount but that way, we cant use setState because thats only allowed once this component is mounted. Then a solution not using componentWillMount could be using props to handle the error here during a .catch of the .get on BurgerBuilder
+        componentWillMount() {
             axios.interceptors.request.use(request => {
+                console.log("gwwefesfsfds");
                 this.setState({error: null});
                 return request;
             }, error => this.setState({error: error}));
 
             axios.interceptors.response.use(response => response, error => this.setState({error: error}));
         }
+
+        state = {
+            error: null
+        }
+
+        componentDidMount() {}
 
         modalClosedHandler = () => this.setState({error: null})
 
@@ -29,7 +33,7 @@ const withErrorHandling = (WrappedComponent, axios) => (
                         modalClosed={this.modalClosedHandler}>
                         {this.state.error ? this.state.error.message : null}
                     </Modal>
-                    <WrappedComponent/>
+                    <WrappedComponent {...this.props}/>
                 </Aux>
             );
         }
