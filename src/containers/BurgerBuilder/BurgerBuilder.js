@@ -10,6 +10,9 @@ import OrderSummary      from '../../components/Burger/OrderSummary/OrderSummary
 import Spinner           from '../../components/UI/Spinner/Spinner';
 import withErrorHandling from '../../hoc/withErrorHandling';
 
+import {Route}           from 'react-router-dom';
+import Checkout          from '../Checkout/Checkout';
+
 const INGREDIENT_PRICES = {
     salad:  0.5,
     bacon:  0.4,
@@ -83,25 +86,26 @@ class BurgerBuilder extends Component {
     }
 
     orderContinueHandler = () => {
-        // alert("You Continue!");
-        this.setState({loading: true});
-        const order = {
-            ingredients: this.state.ingredients,
-            totalPrice: this.state.totalPrice,
-            customer: {
-                name: "testName",
-                adress: {
-                    street: "testStreet",
-                    zipcode: "12345",
-                    country: "testCountry"
-                },
-                email: "test.@test.com"
-            },
-            deliveryMethod: "fastest"
-        }
-        axios.post("orders.json", order)
-            .then(response => this.setState({purchasing: false, loading: false}))
-            .catch(error => this.setState({purchasing: false, loading: false}));
+        // // alert("You Continue!");
+        // this.setState({loading: true});
+        // const order = {
+        //     ingredients: this.state.ingredients,
+        //     totalPrice: this.state.totalPrice,
+        //     customer: {
+        //         name: "testName",
+        //         adress: {
+        //             street: "testStreet",
+        //             zipcode: "12345",
+        //             country: "testCountry"
+        //         },
+        //         email: "test.@test.com"
+        //     },
+        //     deliveryMethod: "fastest"
+        // }
+        // axios.post("orders.json", order)
+        //     .then(response => this.setState({purchasing: false, loading: false}))
+        //     .catch(error => this.setState({purchasing: false, loading: false}));
+        this.props.history.push("/checkout");
     }
 
     render() {
@@ -145,6 +149,7 @@ class BurgerBuilder extends Component {
                     >
                     {orderSummary}
                 </Modal>
+                <Route path="/checkout" component={Checkout}/>
                 {burger}
             </Aux>
         );
