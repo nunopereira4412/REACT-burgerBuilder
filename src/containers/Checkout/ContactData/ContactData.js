@@ -20,7 +20,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             email: {
                 elementType: "input",
@@ -32,7 +33,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             street: {
                 elementType: "input",
@@ -44,7 +46,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             zipCode: {
                 elementType: "input",
@@ -55,10 +58,11 @@ class ContactData extends Component {
                 value: "",
                 validation: {
                     required: true,
-                    minLength: "5",
-                    maxLength: "5"
+                    minLength: "4",
+                    maxLength: "4"
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             country: {
                 elementType: "input",
@@ -70,7 +74,8 @@ class ContactData extends Component {
                 validation: {
                     required: true
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             deliveryMethod: {
                 elementType: "select",
@@ -89,13 +94,14 @@ class ContactData extends Component {
     checkValidity(value, rules) {
         let isValid = true;
 
-        if(rules.required)
-            isValid = value.trim() !== "" && isValid;
-        if(rules.minLength)
-            isValid = value.length >= rules.minLength && isValid;
-        if(rules.minLength)
-            isValid = value.length = rules.maxLength && isValid;
-        
+        if(rules) {
+            if(rules.required)
+                isValid = value.trim() !== "" && isValid;
+            if(rules.minLength)
+                isValid = value.length >= rules.minLength && isValid;
+            if(rules.maxLength)
+                isValid = value.length <= rules.maxLength && isValid;
+        }
         return isValid;
     }
 
@@ -125,11 +131,9 @@ class ContactData extends Component {
         let updatedOrderForm = this.state.orderForm;
         let updatedFormElement = updatedOrderForm[id];
         updatedFormElement.value = event.target.value;
-
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);         
-
-        console.log(updatedFormElement);
-
+        
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+        updatedFormElement.touched = true;         
         updatedOrderForm[id] = updatedFormElement;
 
         this.setState({orderForm: updatedOrderForm});
@@ -142,7 +146,7 @@ class ContactData extends Component {
         for(let key in this.state.orderForm) {
             formElements.push({
                 id: key,
-                config: this.state.orderForm[key]
+                config: this.state.orderForm[key], 
             });
         }
 
@@ -154,7 +158,10 @@ class ContactData extends Component {
                         elementType={el.config.elementType}
                         elementConfig={el.config.elementConfig}
                         value={el.config.value}
-                        changed={(event) => this.inputChangedHandler(event, el.id)}/>
+                        changed={(event) => this.inputChangedHandler(event, el.id)}
+                        isValid={el.config.valid}
+                        shouldValidate={el.config.validation}
+                        touched={el.config.touched}/>
                 ))}
                 {/* <Button buttonType="Success" clicked={(event) => this.orderHandler(event)}>ORDER</Button> */}
                 <Button buttonType="Success">ORDER</Button>
