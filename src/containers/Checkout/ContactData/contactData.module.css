@@ -8,10 +8,6 @@
     box-sizing: border-box;
 }
 
-.Button {
-    display: none
-}
-
 @media(min-width: 600px) {
     .ContactData {
         width: 500px;
