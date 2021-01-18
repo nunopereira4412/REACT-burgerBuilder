@@ -29,7 +29,6 @@ class Orders extends Component {
     }
 }
 
-
 const mapStateToProps = state => {
     return {
         orders:  state.order.orders,
