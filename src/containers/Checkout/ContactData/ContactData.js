@@ -1,12 +1,13 @@
-import React, {Component} from 'react';
-import axios              from '../../../hoc/axiosOrders';
+import React, {Component}  from 'react';
+import axios               from '../../../hoc/axiosOrders';
 
-import Button             from '../../../components/UI/Button/Button';
-import classes            from './contactData.module.css';
-import Spinner            from '../../../components/UI/Spinner/Spinner';
-import Input              from '../../../components/UI/Input/Input';
+import Button              from '../../../components/UI/Button/Button';
+import classes             from './contactData.module.css';
+import Spinner             from '../../../components/UI/Spinner/Spinner';
+import Input               from '../../../components/UI/Input/Input';
 
-import {connect}          from 'react-redux';
+import {connect}           from 'react-redux';
+import * as actionCreators from '../../../store/actions/actionsIndex';
 
 class ContactData extends Component {
 
@@ -92,7 +93,6 @@ class ContactData extends Component {
                 valid: "true"
             }
         },
-        loading: false,
         isValid: false
     }
 
@@ -124,12 +124,10 @@ class ContactData extends Component {
             totalPrice: this.props.totalPrice.toFixed(2),
             orderData: {...formData}
         }
-        axios.post("orders.json", order)
-            .then(response => {
-                this.setState({loading: false});
-                this.props.history.push("/");
-            })
-            .catch(error => this.setState({loading: false}));
+
+
+        this.props.orderSubmit(order);
+        this.props.history.push("/");
     }
 
     inputChangedHandler = (event, id) => {
@@ -160,7 +158,7 @@ class ContactData extends Component {
             });
         }
 
-        let form = this.state.loading ? <Spinner/> : (
+        let form = this.state.loadig ? <Spinner/> : (
             <form onSubmit={this.orderHandler}>
                 {formElements.map(el => (
                     <Input 
@@ -189,9 +187,18 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.bb.ingredients,
+        totalPrice:  state.bb.totalPrice,
+        loading:     state.order.loading
     }
 };
 
-export default connect(mapStateToProps)(ContactData);
+
+const mapDispatchToProps = dispatch => {
+    return {
+        orderSubmit: (orderData) => dispatch(actionCreators.orderSubmit(orderData))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+// export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

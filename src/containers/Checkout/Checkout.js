@@ -13,6 +13,7 @@ class Checkout extends Component {
     checkoutContinuedHandler = () => this.props.history.push("/checkout/contact-data");
 
     render() {
+        console.log("\n\nSAFDSAFD\n\n", this.props.ingredients);
         return (
             <Fragment>
                 <CheckoutSummary 
@@ -30,8 +31,8 @@ class Checkout extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.ingredients,
-        totalPrice: state.totalPrice
+        ingredients: state.bb.ingredients,
+        totalPrice: state.bb.totalPrice
     };
 };
 
