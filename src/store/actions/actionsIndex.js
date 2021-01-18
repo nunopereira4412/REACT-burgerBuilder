@@ -2,8 +2,10 @@ export {
     storeIngredients,
     addIng,
     removeIng
-}                       from './burgerBuilder';
+}                           from './burgerBuilder';
 
 export {
-    orderSubmit
-}                       from './order';
+    orderSubmit,
+    fetchOrders,
+    purchaseInit
+}                           from './order';

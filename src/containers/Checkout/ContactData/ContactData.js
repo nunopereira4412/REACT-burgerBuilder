@@ -8,6 +8,9 @@ import Input               from '../../../components/UI/Input/Input';
 
 import {connect}           from 'react-redux';
 import * as actionCreators from '../../../store/actions/actionsIndex';
+import withErrorHandling   from '../../../hoc/withErrorHandling';
+
+import {Redirect}          from 'react-router-dom';
 
 class ContactData extends Component {
 
@@ -112,7 +115,6 @@ class ContactData extends Component {
 
     orderHandler = (event) => {
         event.preventDefault();
-        this.setState({loading: true});
 
         const formData = [];
         for(let formElementId in this.state.orderForm) {
@@ -124,10 +126,8 @@ class ContactData extends Component {
             totalPrice: this.props.totalPrice.toFixed(2),
             orderData: {...formData}
         }
-
-
+         
         this.props.orderSubmit(order);
-        this.props.history.push("/");
     }
 
     inputChangedHandler = (event, id) => {
@@ -158,7 +158,7 @@ class ContactData extends Component {
             });
         }
 
-        let form = this.state.loadig ? <Spinner/> : (
+        let form = this.props.purchased ? <Redirect to="/"/> : (
             <form onSubmit={this.orderHandler}>
                 {formElements.map(el => (
                     <Input 
@@ -171,10 +171,9 @@ class ContactData extends Component {
                         shouldValidate={el.config.validation}
                         touched={el.config.touched}/>
                 ))}
-                {/* <Button buttonType="Success" clicked={(event) => this.orderHandler(event)}>ORDER</Button> */}
                 <Button buttonType="Success" disabled={!this.state.isValid}>ORDER</Button>
             </form>
-        );
+        )
 
         return (
             <div className={classes.ContactData}>
@@ -189,8 +188,9 @@ const mapStateToProps = state => {
     return {
         ingredients: state.bb.ingredients,
         totalPrice:  state.bb.totalPrice,
-        loading:     state.order.loading
-    }
+        purchased:   state.order.purchased,
+        error:       state.order.error
+    };
 };
 
 
@@ -200,5 +200,5 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandling(ContactData, axios));
 // export default connect(mapStateToProps, mapDispatchToProps)(ContactData);

@@ -60,7 +60,10 @@ class BurgerBuilder extends Component {
         this.setState({purchasing: false});
     }
 
-    orderContinueHandler = () => this.props.history.push("/checkout");
+    orderContinueHandler = () => {
+        this.props.purchaseInit();
+        this.props.history.push("/checkout");
+    }
 
     render() {
         const disabledInfo = {...this.props.ingredients};
@@ -101,7 +104,7 @@ class BurgerBuilder extends Component {
                     >
                     {orderSummary}
                 </Modal>
-                < Route path="/checkout" component={Checkout}/>
+                <Route path="/checkout" component={Checkout}/>
                 {burger}
             </Aux>
         );
@@ -112,23 +115,18 @@ const mapStateToProps = state => {
     return {
         ingredients: state.bb.ingredients,
         totalPrice:  state.bb.totalPrice,
-        error:       state.bb.error
+        error:       state.bb.error,
+        purchased:   state.order.purchased
     }
 };
-// const mapStateToProps = state => {
-//     return {
-//         ingredients: state.bb.ingredients,
-//         totalPrice:  state.bb.totalPrice,
-//         error:       state.bb.error
-//     }
-// };
 
 const mapDispatchToProps = dispatch => {
     return {
         storeIngredients: ()     => dispatch(actionCreators.storeIngredients()),
         addIng:           (type) => dispatch(actionCreators.addIng(type)),
         removeIng:        (type) => dispatch(actionCreators.removeIng(type)),
-    }
-}
+        purchaseInit:     (type) => dispatch(actionCreators.purchaseInit())
+    };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandling(BurgerBuilder, axios));

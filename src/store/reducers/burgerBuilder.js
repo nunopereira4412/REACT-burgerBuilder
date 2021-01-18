@@ -24,6 +24,7 @@ const reducer = (state = initialState, action) => {
                    cheese: action.ingredientsToStore.cheese,
                    meat: action.ingredientsToStore.meat
                 },
+                totalPrice: 4,
                 error: false
             }
         }
