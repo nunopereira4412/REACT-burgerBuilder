@@ -63,3 +63,7 @@ export const fetchOrders = (token) => {
             .catch(error => dispatch(fetchOrdersError(error)));
     };
 };
+
+export const clearOrders = () => {
+    return {type: actionTypes.CLEAR_ORDERS};
+};

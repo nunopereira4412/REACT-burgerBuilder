@@ -7,7 +7,8 @@ export {
 export {
     orderSubmit,
     fetchOrders,
-    purchaseInit
+    purchaseInit,
+    clearOrders
 }                           from './order';
 
 export {
