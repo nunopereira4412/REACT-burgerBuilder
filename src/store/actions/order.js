@@ -36,10 +36,10 @@ export const purchaseInit = () => {
     return {type: actionTypes.PURCHASE_INIT};
 }
 
-export const orderSubmit = (orderData) => {
+export const orderSubmit = (orderData, token) => {
     return dispatch => {
         dispatch(waitOrderSubmitResponse());
-            axios.post("orders.json", orderData)
+            axios.post("orders.json?auth=" + token, orderData)
             .then(response => {
                 dispatch(orderSubmitSuccess(response.data.name, orderData))
             })
@@ -47,10 +47,10 @@ export const orderSubmit = (orderData) => {
     };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
         dispatch(waitFetchOrders());
-        axios.get("/orders.json")
+        axios.get("/orders.json?auth=" + token)
             .then(res => {
                 const fetchedOrders = [];
                 for(let key in res.data) 
