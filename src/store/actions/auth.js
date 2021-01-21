@@ -7,9 +7,9 @@ const waitAuth = () => {
 
 const authSuccess = (tokenId, userId) => {
     return {
-        type:   actionTypes.AUTH_SUCCESS, 
-        token:  tokenId,
-        userId: userId
+        type:       actionTypes.AUTH_SUCCESS, 
+        token:      tokenId,
+        userId:     userId
     };
 };
 
@@ -25,12 +25,16 @@ const logoutOnTimeout = (tokenExpirationTime) => {
         setTimeout(() => {
             dispatch(logout());
         }, tokenExpirationTime * 1000);
-    }
-}
+    };
+};
 
 export const logout = () => {
-    return {type: actionTypes.LOGOUT, token: null, userId: null};
-}
+    return {
+        type: actionTypes.LOGOUT, 
+        token: null, 
+        userId: null
+    };
+};
 
 export const auth = (email, password, isSignUp) => {
     return dispatch => {
@@ -57,4 +61,8 @@ export const auth = (email, password, isSignUp) => {
                 dispatch(authError(error.response.data.error.message))
             });
     };
+};
+
+export const setRedirectPath = (path) => {
+    return {type: actionTypes.SET_REDIRECT_PATH, path};
 };

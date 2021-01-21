@@ -29,6 +29,9 @@ class BurgerBuilder extends Component {
     componentDidMount() {
         console.log("[BurgerBuilder.js] componentDidMount");
         this.props.storeIngredients();
+
+        if(!this.props.building && this.props.redirectPath !== "/")
+            this.props.setRedirectPath("/");
     }
 
     addIngredientHandler = (type) => {
@@ -49,7 +52,13 @@ class BurgerBuilder extends Component {
     }
 
     orderBtnClickedHandler = () => {
-        this.setState({purchasing: true});
+        if(this.props.isLoggedIn)
+            this.setState({purchasing: true});
+        else 
+            if(this.props.building) {
+                this.props.setRedirectPath("/checkout");
+                this.props.history.push("/auth");
+            }   
     }
 
     modalClosedHandler = () => {
@@ -85,6 +94,7 @@ class BurgerBuilder extends Component {
                         totalPrice       = {this.props.totalPrice}
                         purchasable      = {this.updatePurchaseState(this.props.ingredients)}
                         orderBtnClicked  = {this.orderBtnClickedHandler}
+                        isLoggedIn       = {this.props.isLoggedIn}
                     />
                 </Aux>);
             orderSummary = (
@@ -113,10 +123,13 @@ class BurgerBuilder extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.bb.ingredients,
-        totalPrice:  state.bb.totalPrice,
-        error:       state.bb.error,
-        purchased:   state.order.purchased
+        ingredients:  state.bb.ingredients,
+        totalPrice:   state.bb.totalPrice,
+        error:        state.bb.error,
+        purchased:    state.order.purchased,
+        building:     state.bb.building,
+        isLoggedIn:   state.auth.token != null,
+        redirectPath: state.auth.redirectPath
     }
 };
 
@@ -125,7 +138,8 @@ const mapDispatchToProps = dispatch => {
         storeIngredients: ()     => dispatch(actionCreators.storeIngredients()),
         addIng:           (type) => dispatch(actionCreators.addIng(type)),
         removeIng:        (type) => dispatch(actionCreators.removeIng(type)),
-        purchaseInit:     (type) => dispatch(actionCreators.purchaseInit())
+        purchaseInit:     (type) => dispatch(actionCreators.purchaseInit()),
+        setRedirectPath:  (path) => dispatch(actionCreators.setRedirectPath(path))
     };
 };
 

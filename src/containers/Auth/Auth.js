@@ -6,6 +6,7 @@ import classes             from './auth.module.css';
 import {connect}           from 'react-redux';
 import * as actionCreators from '../../store/actions/actionsIndex';
 import Spinner             from '../../components/UI/Spinner/Spinner';   
+import {Redirect}          from 'react-router-dom';
 
 class Auth extends Component {
     state = {
@@ -127,8 +128,12 @@ class Auth extends Component {
         );
 
         const errorMessage = this.props.errorMessage ? this.props.errorMessage : null;
+
+        const redirectTo   = this.props.isLoggedIn ? <Redirect to={this.props.redirectPath}/> : null;
+
         return (
             <div className={classes.Auth}>
+                {redirectTo}
                 {errorMessage}
                 {authContent}
             </div>
@@ -138,8 +143,10 @@ class Auth extends Component {
 
 const mapStateToProps = state => {
     return {
-        errorMessage: state.auth.errorMessage,
-        loading:      state.auth.loading
+        errorMessage:   state.auth.errorMessage,
+        loading:        state.auth.loading,
+        isLoggedIn:     state.auth.token !== null,
+        redirectPath:   state.auth.redirectPath
     };
 };
 

@@ -16,3 +16,4 @@ export const WAIT_AUTH = "WAIT_AUTH";
 export const AUTH_SUCCESS = "AUTH_SUCCESS";
 export const AUTH_ERROR = "AUTH_ERROR";
 export const LOGOUT = "LOGOUT";
+export const SET_REDIRECT_PATH = "REDIRECT_PATH";
