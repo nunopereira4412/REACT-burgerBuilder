@@ -6,6 +6,7 @@ import Logo from '../../Logo/Logo';
 import NavigationItems from '../NavigationItems/NavigationItems';
 import DrawerToggle from '../DrawerToggle/DrawerToggle';
 
+
 const toolbar = (props) => (
     <header className={classes.Toolbar}>
         <DrawerToggle clicked={props.drawerToggleClicked}/>
@@ -14,7 +15,7 @@ const toolbar = (props) => (
             <Logo/>
         </div>
         <nav className={classes.DesktopOnly}>
-            <NavigationItems/>
+            <NavigationItems isLoggedIn={props.isLoggedIn}/>
         </nav>
     </header>
 );

@@ -48,7 +48,7 @@ const removeIngredient = (state, action) => {
     return updateObject(state, updatedState); 
 }
 
-const reducer = (state = initialState, action) => {
+const burgerBuilderReducer = (state = initialState, action) => {
     switch(action.type) {
         case(actionTypes.STORE_INGREDIENTS):         return storeIngredients(state, action);
         case(actionTypes.ERROR_STORING_INGREDIENTS): return updateObject(state, {error: true});
@@ -58,4 +58,4 @@ const reducer = (state = initialState, action) => {
     };
 };
 
-export default reducer;
+export default burgerBuilderReducer;
