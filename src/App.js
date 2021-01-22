@@ -1,14 +1,22 @@
-import React, {Component} from 'react';
-import {Route, Switch}            from 'react-router-dom';
+import React, {Component}  from 'react';
+import {Route, Switch}     from 'react-router-dom';
 
-import Layout             from './hoc/Layout/Layout';
-import BurgerBuilder      from './containers/BurgerBuilder/BurgerBuilder';
-import Checkout           from './containers/Checkout/Checkout';
-import Orders             from './containers/Orders/Orders';
-import Auth               from './containers/Auth/Auth';
-import Logout             from './containers/Logout/Logout';
+import Layout              from './hoc/Layout/Layout';
+import BurgerBuilder       from './containers/BurgerBuilder/BurgerBuilder';
+import Checkout            from './containers/Checkout/Checkout';
+import Orders              from './containers/Orders/Orders';
+import Auth                from './containers/Auth/Auth';
+import Logout              from './containers/Logout/Logout';
+
+import {connect}           from 'react-redux';
+import * as actionCreators from './store/actions/actionsIndex';
 
 class App extends Component {
+
+  componentDidMount() {
+    this.props.checkAuthState();
+  }
+
   render() {
     return (
       <Layout>
@@ -24,4 +32,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    checkAuthState: () => dispatch(actionCreators.checkAuthState())
+  };
+};
+
+export default connect(null, mapDispatchToProps)(App);

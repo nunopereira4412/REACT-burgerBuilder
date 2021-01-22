@@ -29,8 +29,8 @@ const authError = (state, action) => {
 
 const logout = (state, action) => {
     const logoutUpdates = {
-        token:      action.token,
-        userId:     action.userId,
+        token:      null,
+        userId:     null,
         isLoggedIn: false
     }
     return updateObject(state, logoutUpdates);
