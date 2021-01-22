@@ -29,7 +29,6 @@ class BurgerBuilder extends Component {
     componentDidMount() {
         console.log("[BurgerBuilder.js] componentDidMount");
         this.props.storeIngredients();
-
         if(!this.props.building && this.props.redirectPath !== "/")
             this.props.setRedirectPath("/");
     }

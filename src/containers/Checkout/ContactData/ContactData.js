@@ -122,8 +122,9 @@ class ContactData extends Component {
 
         const order = {
             ingredients: this.props.ingredients,
-            totalPrice: this.props.totalPrice.toFixed(2),
-            orderData: {...formData}
+            totalPrice:  this.props.totalPrice.toFixed(2),
+            orderData:   {...formData},
+            userId:      this.props.userId
         }
          
         this.props.orderSubmit(order, this.props.token);
@@ -185,11 +186,12 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients: state.bb.ingredients,
-        totalPrice:  state.bb.totalPrice,
-        purchased:   state.order.purchased,
-        error:       state.order.error,
-        token:       state.auth.token
+        ingredients:    state.bb.ingredients,
+        totalPrice:     state.bb.totalPrice,
+        purchased:      state.order.purchased,
+        error:          state.order.error,
+        token:          state.auth.token,
+        userId: state.auth.userId
     };
 };
 
@@ -200,5 +202,4 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandling(ContactData, axios));
-// export default connect(mapStateToProps, mapDispatchToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandling(ContactData, axios))

@@ -47,17 +47,18 @@ export const orderSubmit = (orderData, token) => {
     };
 };
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(waitFetchOrders());
         axios.get("/orders.json?auth=" + token)
             .then(res => {
                 const fetchedOrders = [];
                 for(let key in res.data) 
-                fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                });
+                    if(res.data[key].userId === userId)
+                        fetchedOrders.push({
+                                ...res.data[key],
+                                id: key
+                        });
                 dispatch(fetchOrdersSuccess(fetchedOrders))
             })
             .catch(error => dispatch(fetchOrdersError(error)));
