@@ -1,4 +1,5 @@
-import React, {Component}   from 'react';
+import React, {Component}  from 'react';
+import {Route}             from 'react-router-dom';
 
 import axios               from '../../hoc/axiosOrders';
 
@@ -9,9 +10,6 @@ import Modal               from '../../components/UI/Modal/Modal';
 import OrderSummary        from '../../components/Burger/OrderSummary/OrderSummary';
 import Spinner             from '../../components/UI/Spinner/Spinner';
 import withErrorHandling   from '../../hoc/withErrorHandling';
-
-import {Route}             from 'react-router-dom';
-import Checkout            from '../Checkout/Checkout';
 
 import {connect}           from 'react-redux';
 import * as actionCreators from '../../store/actions/actionsIndex';
@@ -113,7 +111,6 @@ class BurgerBuilder extends Component {
                     >
                     {orderSummary}
                 </Modal>
-                <Route path="/checkout" component={Checkout}/>
                 {burger}
             </Aux>
         );
