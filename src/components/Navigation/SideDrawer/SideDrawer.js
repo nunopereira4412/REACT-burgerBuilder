@@ -17,12 +17,12 @@ const sideDrawer = (props) => {
         <Aux>
             {/* pra tirar o backdrop é fazer media query para min width 500px*/}
             <Backdrop classeName={classes.Backdrop} show={props.open} clicked={props.sideDrawerClosed}/>
-            <div className={attachedClasses.join(" ")}>
+            <div className = {attachedClasses.join(" ")}>
                 {/* <Logo height="11%"/> */}
                 <div className={classes.Logo}>
                     <Logo/>
                 </div>
-                <nav>
+                <nav onClick={props.sideDrawerClosed}>
                     <NavigationItems isLoggedIn={props.isLoggedIn}/>
                 </nav>
             </div>
