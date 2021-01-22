@@ -186,12 +186,12 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingredients:    state.bb.ingredients,
-        totalPrice:     state.bb.totalPrice,
-        purchased:      state.order.purchased,
-        error:          state.order.error,
-        token:          state.auth.token,
-        userId: state.auth.userId
+        ingredients: state.bb.ingredients,
+        totalPrice:  state.bb.totalPrice,
+        purchased:   state.order.purchased,
+        error:       state.order.error,
+        token:       state.auth.token,
+        userId:      state.auth.userId
     };
 };
 

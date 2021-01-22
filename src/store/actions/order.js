@@ -50,21 +50,17 @@ export const orderSubmit = (orderData, token) => {
 export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(waitFetchOrders());
-        axios.get("/orders.json?auth=" + token)
+        const queryParams = '?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"';
+        axios.get('/orders.json' + queryParams)
             .then(res => {
                 const fetchedOrders = [];
                 for(let key in res.data) 
-                    if(res.data[key].userId === userId)
-                        fetchedOrders.push({
-                                ...res.data[key],
-                                id: key
-                        });
+                    fetchedOrders.push({
+                            ...res.data[key],
+                            id: key
+                    });
                 dispatch(fetchOrdersSuccess(fetchedOrders))
             })
             .catch(error => dispatch(fetchOrdersError(error)));
     };
-};
-
-export const clearOrders = () => {
-    return {type: actionTypes.CLEAR_ORDERS};
 };

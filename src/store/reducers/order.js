@@ -8,13 +8,6 @@ const initialState = {
     error:     false
 };
 
-const clearOrders = (state) => {
-    return {
-        ...state,
-        orders: []
-    };
-};
-
 const orderReducer = (state = initialState, action) => {
     switch(action.type) {
         case(actionTypes.ORDER_SUBMIT_SUCCESS): {
@@ -25,7 +18,6 @@ const orderReducer = (state = initialState, action) => {
         case(actionTypes.WAIT_ORDER_SUBMIT_RESPONSE): return updateObject(state, {loading: true});
         case(actionTypes.STORE_FETCHED_ORDERS):       return updateObject(state, {orders: action.fetchedOrders, loading: false});
         case(actionTypes.ERROR_FETCHING_ORDERS):      return updateObject(state, {loading: false});
-        case(actionTypes.CLEAR_ORDERS):               return clearOrders(state);
         case(actionTypes.WAIT_FETCH_ORDERS):          return updateObject(state, {loading: true});
         case(actionTypes.PURCHASE_INIT):              return updateObject(state, {purchased: false});
         default:                                      return state;
