@@ -1,5 +1,4 @@
 import React, {Component}  from 'react';
-import {Route}             from 'react-router-dom';
 
 import axios               from '../../hoc/axiosOrders';
 
@@ -15,17 +14,13 @@ import {connect}           from 'react-redux';
 import * as actionCreators from '../../store/actions/actionsIndex';
 
 class BurgerBuilder extends Component {
-    constructor(props) {
-        super(props);
-        console.log("[BurgerBuilder.js] constructor");
-    }
+
 
     state = {
         purchasing:  false
     }
 
     componentDidMount() {
-        console.log("[BurgerBuilder.js] componentDidMount");
         this.props.storeIngredients();
         if(!this.props.building && this.props.redirectPath !== "/")
             this.props.setRedirectPath("/");

@@ -17,10 +17,9 @@ class Orders extends Component {
         const orders = this.props.loading ? <Spinner/> : (
             this.props.orders.map(order => (
                 <Order 
-                    ingredients={order.ingredients} 
-                    totalPrice={order.totalPrice}
-                    key={order.id}/>)));
-
+                ingredients={order.ingredients} 
+                totalPrice={order.totalPrice}
+                key={order.id}/>)));
         return (
             <div>
                 {orders}
