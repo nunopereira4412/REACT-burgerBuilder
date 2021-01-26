@@ -22,9 +22,9 @@ const App = props => {
     <Switch>
       <Route 
         path="/auth" 
-        render={() => (
+        render={props => (
           <Suspense fallback={<div>Loading...</div>}>
-              <Auth/>
+              <Auth {...props}/>
           </Suspense>
         )}
       />
@@ -38,25 +38,25 @@ const App = props => {
       <Switch>
         <Route 
           path="/checkout" 
-          render={() => (
+          render={props => (
           <Suspense fallback={<div>Loading...</div>}>
-              <Checkout/>
+              <Checkout {...props}/>
           </Suspense>
           )}
         />
         <Route 
           path="/orders" 
-          render={() => (
+          render={props => (
             <Suspense fallback={<div>Loading...</div>}>
-                <Orders/>
+                <Orders {...props}/>
             </Suspense>
           )}
         />
         <Route 
           path="/auth" 
-          render={() => (
+          render={props => (
             <Suspense fallback={<div>Loading...</div>}>
-                <Auth/>
+                <Auth {...props}/>
             </Suspense>
           )}
         />

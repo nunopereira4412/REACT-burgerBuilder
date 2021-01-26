@@ -17,7 +17,7 @@ class Logout extends Component {
 
 const mapDispatchToProps = dispatch => {
     return {
-        logout:      () => dispatch(actionCreators.logout())
+        logout: () => dispatch(actionCreators.logout())
     }
 }
 

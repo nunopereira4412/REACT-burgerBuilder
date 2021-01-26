@@ -15,7 +15,6 @@ import * as actionCreators from '../../store/actions/actionsIndex';
 
 class BurgerBuilder extends Component {
 
-
     state = {
         purchasing:  false
     }
