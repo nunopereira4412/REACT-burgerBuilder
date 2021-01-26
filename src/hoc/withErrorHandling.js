@@ -1,47 +1,41 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 
 import Aux                from './Aux';
 import Modal              from '../components/UI/Modal/Modal';
 
 const withErrorHandling = (WrappedComponent, axios) => (
-    class extends Component {
+    props => {
 
-        state = {
-            error: null
-        }
+        const [error, setError] = useState(null);
 
-        //constructor should be used instead of componentWillMount but that way, we cant use setState because thats only allowed once this component is mounted. Then a solution not using componentWillMount could be using props to handle the error here during a .catch of the .get on BurgerBuilder
-        componentWillMount() {
-            this.requestInterceptor = axios.interceptors.request.use(request => {
-                this.setState({error: null});
-                return request;
-            }, error => this.setState({error: error}));
+        const requestInterceptor = axios.interceptors.request.use(request => {
+            setError(null);
+            return request;
+        }, error => setError(error));
 
-            this.responseInterceptor = axios.interceptors.response.use(response => response, error => this.setState({error: error}));
-        }
+        const responseInterceptor = axios.interceptors.response.use(response => 
+            response, error => setError(error));
 
+        useEffect(() => {
+            return () => {
+                axios.interceptors.request.eject(requestInterceptor);
+                axios.interceptors.response.eject(responseInterceptor);
+            };
+        }, [requestInterceptor, responseInterceptor]);
 
-        componentDidMount() {}
+        const modalClosedHandler = () => setError(null);
 
-        componentWillUnmount() {
-            axios.interceptors.request.eject(this.requestInterceptor);
-            axios.interceptors.response.eject(this.responseInterceptor);
-        }
-
-        modalClosedHandler = () => this.setState({error: null})
-
-        render() {
-            return (
-                <Aux>
-                    <Modal 
-                        show={this.state.error}
-                        modalClosed={this.modalClosedHandler}>
-                        {this.state.error ? this.state.error.message : null}
-                    </Modal>
-                    <WrappedComponent {...this.props}/>
-                </Aux>
-            );
-        }
+        
+        return (
+            <Aux> 
+                <Modal 
+                    show={error}
+                    modalClosed={modalClosedHandler}>
+                    {error ? error.message : null}
+                </Modal>
+                <WrappedComponent {...props}/>
+            </Aux>
+        ); 
     }
 );
 
