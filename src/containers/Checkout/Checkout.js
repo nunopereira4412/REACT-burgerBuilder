@@ -1,12 +1,12 @@
-import React, {Fragment}  from 'react';
+import React, {Fragment} from 'react';
 
-import CheckoutSummary               from '../../components/Order/CheckoutSummary/CheckoutSummary';
+import CheckoutSummary   from '../../components/Order/CheckoutSummary/CheckoutSummary';
 
-import {Route, Redirect, withRouter} from 'react-router-dom';
-import ContactData                   from './ContactData/ContactData';
-import Spinner                       from '../../components/UI/Spinner/Spinner';
+import {Route, Redirect} from 'react-router-dom';
+import ContactData       from './ContactData/ContactData';
+import Spinner           from '../../components/UI/Spinner/Spinner';
 
-import {connect}                     from 'react-redux';
+import {connect}         from 'react-redux';
 
 const Checkout = props => {
 

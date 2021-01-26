@@ -1,4 +1,4 @@
-import React, {Component}  from 'react';
+import React, {useState}   from 'react';
 import axios               from '../../../hoc/axiosOrders';
 
 import Button              from '../../../components/UI/Button/Button';
@@ -11,10 +11,12 @@ import withErrorHandling   from '../../../hoc/withErrorHandling';
 
 import {Redirect}          from 'react-router-dom';
 
-class ContactData extends Component {
+import { updateObject, checkValidity } from '../../../shared/utility';
 
-    state = {
-        orderForm: {
+
+const ContactData = props => {
+
+    const [orderForm, setOrderForm] = useState({
             name: {
                 elementType: "input",
                 elementConfig: {
@@ -94,95 +96,83 @@ class ContactData extends Component {
                 validation: {}, //checking for "rules" in checkValidity also works
                 valid: "true"
             }
-        },
-        isValid: false
-    }
+    });
+    
+    const [isValid, setIsValid] = useState(false);
 
-    checkValidity(value, rules) {
-        let isValid = true;
-
-        if(rules) { //setting an empty validation object to "deliveryMethod" in the state also works 
-            if(rules.required)
-                isValid = value.trim() !== "" && isValid;
-            if(rules.minLength)
-                isValid = value.length >= rules.minLength && isValid;
-            if(rules.maxLength)
-                isValid = value.length <= rules.maxLength && isValid;
-        }
-        return isValid;
-    }
-
-    orderHandler = (event) => {
+    const orderHandler = (event) => {
         event.preventDefault();
 
         const formData = [];
-        for(let formElementId in this.state.orderForm) {
-            formData[formElementId] = this.state.orderForm[formElementId].value;
+        for(let formElementId in orderForm) {
+            formData[formElementId] = orderForm[formElementId].value;
         }
 
         const order = {
-            ingredients: this.props.ingredients,
-            totalPrice:  this.props.totalPrice.toFixed(2),
+            ingredients: props.ingredients,
+            totalPrice:  props.totalPrice.toFixed(2),
             orderData:   {...formData},
-            userId:      this.props.userId
+            userId:      props.userId
         }
          
-        this.props.orderSubmit(order, this.props.token);
+        props.orderSubmit(order, props.token);
     }
 
-    inputChangedHandler = (event, id) => {
-        let updatedOrderForm = this.state.orderForm;
-        let updatedFormElement = updatedOrderForm[id];
-        updatedFormElement.value = event.target.value;
-        
-        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
-        updatedFormElement.touched = true;         
-        updatedOrderForm[id] = updatedFormElement;
+    const inputChangedHandler = (event, id) => {
+
+        const updatedFormElement = updateObject(orderForm[id], {
+            ...orderForm[id],
+            value: event.target.value,
+            valid: checkValidity(event.target.value, orderForm[id].validation),
+            touched: true
+        })
+
+        const updatedOrderForm = updateObject(orderForm, {
+            [id]: updatedFormElement
+        })
 
         let formValidity = true;
-        for(let formElement in updatedOrderForm)
-            formValidity = formValidity && updatedOrderForm[formElement].valid;
+        for(let id in updatedOrderForm)
+            formValidity = formValidity && updatedOrderForm[id].valid;
 
-        console.log("AFTER " + formValidity);    
-        this.setState({orderForm: updatedOrderForm, isValid: formValidity});
+        setOrderForm(updatedOrderForm);
+        setIsValid(formValidity);
     }
 
-    render() {
+    const formElements = [];
 
-        const formElements = [];
-
-        for(let key in this.state.orderForm) {
-            formElements.push({
-                id: key,
-                config: this.state.orderForm[key], 
-            });
-        }
-
-        let form = this.props.purchased ? <Redirect to="/"/> : (
-            <form onSubmit={this.orderHandler}>
-                {formElements.map(el => (
-                    <Input 
-                        key={el.id}
-                        elementType={el.config.elementType}
-                        elementConfig={el.config.elementConfig}
-                        value={el.config.value}
-                        changed={(event) => this.inputChangedHandler(event, el.id)}
-                        isValid={el.config.valid}
-                        shouldValidate={el.config.validation}
-                        touched={el.config.touched}/>
-                ))}
-                <Button buttonType="Success" disabled={!this.state.isValid}>ORDER</Button>
-            </form>
-        )
-
-        return (
-            <div className={classes.ContactData}>
-                <h4>Enter your contact data</h4>
-                {form}
-            </div>
-        );
+    for(let key in orderForm) {
+        formElements.push({
+            id: key,
+            config: orderForm[key], 
+        });
     }
+
+    let form = props.purchased ? <Redirect to="/"/> : (
+        <form onSubmit={orderHandler}>
+            {formElements.map(el => (
+                <Input 
+                    key={el.id}
+                    elementType={el.config.elementType}
+                    elementConfig={el.config.elementConfig}
+                    value={el.config.value}
+                    changed={(event) => inputChangedHandler(event, el.id)}
+                    isValid={el.config.valid}
+                    shouldValidate={el.config.validation}
+                    touched={el.config.touched}/>
+            ))}
+            <Button buttonType="Success" disabled={!isValid}>ORDER</Button>
+        </form>
+    )
+
+    return (
+        <div className={classes.ContactData}>
+            <h4>Enter your contact data</h4>
+            {form}
+        </div>
+    );
 }
+
 
 const mapStateToProps = state => {
     return {
