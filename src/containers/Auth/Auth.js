@@ -1,4 +1,4 @@
-import React, {useState}  from 'react';
+import React, {useState, useEffect}  from 'react';
 
 import Button              from '../../components/UI/Button/Button';
 import Input               from '../../components/UI/Input/Input';
@@ -11,6 +11,8 @@ import {Redirect}          from 'react-router-dom';
 import {checkValidity}     from '../../shared/utility';
 
 const Auth = props => {
+
+    const {building, redirectPath, setRedirectPath} = props;
 
     const [controls, setControls] = useState({
         email: {
@@ -44,6 +46,11 @@ const Auth = props => {
     });
      
     const [isSignUp, setIsSignUp] = useState(true);
+
+    useEffect(() => {
+        if(!building && redirectPath !== "/")
+            setRedirectPath("/");
+    }, [building, redirectPath, setRedirectPath]);
 
     const inputChangedHandler = (event, controlName) => {
         const updatedControls = {
@@ -104,7 +111,7 @@ const Auth = props => {
 
     const errorMessage = props.errorMessage ? props.errorMessage : null;
 
-    const redirectTo   = props.isLoggedIn ? <Redirect to={props.redirectPath}/> : null;
+    const redirectTo   = props.isLoggedIn && <Redirect to={props.redirectPath}/>;
 
     return (
         <div className={classes.Auth}>
@@ -120,13 +127,15 @@ const mapStateToProps = state => {
         errorMessage:   state.auth.errorMessage,
         loading:        state.auth.loading,
         isLoggedIn:     state.auth.token !== null,
-        redirectPath:   state.auth.redirectPath
+        redirectPath:   state.auth.redirectPath,
+        building:     state.bb.building
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, isSignUp) => dispatch(actionCreators.auth(email, password, isSignUp))
+        onAuth: (email, password, isSignUp) => dispatch(actionCreators.auth(email, password, isSignUp)),
+        setRedirectPath:  (path) => dispatch(actionCreators.setRedirectPath(path))
     };
 };
 

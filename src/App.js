@@ -14,9 +14,11 @@ const Checkout = React.lazy(() => import('./containers/Checkout/Checkout'));
 
 const App = props => {
 
+  const {checkAuthState} = props;
+
   useEffect(() => {
-    props.checkAuthState();
-  }, []);
+    checkAuthState();
+  }, [checkAuthState]);
 
   let routes = (
     <Switch>

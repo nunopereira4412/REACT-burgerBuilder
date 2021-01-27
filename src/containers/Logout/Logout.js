@@ -6,7 +6,9 @@ import {Redirect}          from 'react-router-dom';
 
 const Logout = props => {
 
-    useEffect(() => props.logout());
+    const {logout} = props;
+
+    useEffect(() => logout(), [logout]);
 
     return <Redirect to="/"/>;
 }

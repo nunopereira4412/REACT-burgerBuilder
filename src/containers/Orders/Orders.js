@@ -9,9 +9,11 @@ import * as actionCreators from '../../store/actions/actionsIndex';
 
 const Orders = props => {
 
+    const {fetchOrders} = props;
+
     useEffect(() => {
-        props.fetchOrders(props.token, props.userId);
-    }, []);
+        fetchOrders(props.token, props.userId);
+    }, [fetchOrders]);
 
     const orders = props.loading ? <Spinner/> : (
         props.orders.map(order => (
