@@ -13,7 +13,7 @@ import withErrorHandling   from '../../hoc/withErrorHandling';
 import {connect}           from 'react-redux';
 import * as actionCreators from '../../store/actions/actionsIndex';
 
-class BurgerBuilder extends Component {
+export class BurgerBuilder extends Component {
 
 
     state = {
