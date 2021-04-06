@@ -25,5 +25,9 @@ export const removeIng = (type) => {
     return {type: actionTypes.REMOVE_ING, ingType: type};
 };
 
+export const resetButton = () => {
+    return {type: actionTypes.RESET_BUTTON};
+}
+
 
 

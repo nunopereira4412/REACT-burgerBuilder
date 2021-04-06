@@ -23,6 +23,11 @@ const buildControls = (props) => (
                 disabled         = {props.disabled[control.type]}
             />
         ))}
+        <button
+            className = {classes.ResetButton}
+            onClick   = {() => props.resetButton()}>
+            RESET
+        </button>
         <button 
             className = {classes.OrderButton}
             disabled  = {!props.purchasable}

@@ -51,12 +51,26 @@ const removeIngredient = (state, action) => {
     return updateObject(state, updatedState); 
 }
 
+const resetButton = (state, action) => {
+    let ingKeys = Object.keys(state.ingredients);
+    let res = {};
+    for(let k of ingKeys)
+        res = updateObject(res, {[k]: 0})
+    const updatedState = {
+        ingredients: res,
+        totalPrice: 4,
+        building: false
+    };
+    return updateObject(state, updatedState);
+}
+
 const burgerBuilderReducer = (state = initialState, action) => {
     switch(action.type) {
         case(actionTypes.STORE_INGREDIENTS):         return storeIngredients(state, action);
         case(actionTypes.ERROR_STORING_INGREDIENTS): return updateObject(state, {error: true});
         case(actionTypes.ADD_ING):                   return addIngredient(state, action);
         case(actionTypes.REMOVE_ING):                return removeIngredient(state, action);           
+        case(actionTypes.RESET_BUTTON):              return resetButton(state, action);           
         default:                                     return state;
     };
 };

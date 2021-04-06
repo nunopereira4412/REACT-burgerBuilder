@@ -12,6 +12,7 @@ import withErrorHandling   from '../../hoc/withErrorHandling';
 
 import {connect}           from 'react-redux';
 import * as actionCreators from '../../store/actions/actionsIndex';
+import { render } from '@testing-library/react';
 
 export class BurgerBuilder extends Component {
 
@@ -66,6 +67,10 @@ export class BurgerBuilder extends Component {
         this.props.history.push("/checkout");
     }
 
+    resetButtonHandler = () => {
+        this.props.resetButton();
+    }
+
     render() {
         const disabledInfo = {...this.props.ingredients};
         for(let key in disabledInfo) 
@@ -87,6 +92,7 @@ export class BurgerBuilder extends Component {
                         purchasable      = {this.updatePurchaseState(this.props.ingredients)}
                         orderBtnClicked  = {this.orderBtnClickedHandler}
                         isLoggedIn       = {this.props.isLoggedIn}
+                        resetButton      = {this.resetButtonHandler}
                     />
                 </Aux>);
             orderSummary = (
@@ -130,7 +136,8 @@ const mapDispatchToProps = dispatch => {
         addIng:           (type) => dispatch(actionCreators.addIng(type)),
         removeIng:        (type) => dispatch(actionCreators.removeIng(type)),
         purchaseInit:     (type) => dispatch(actionCreators.purchaseInit()),
-        setRedirectPath:  (path) => dispatch(actionCreators.setRedirectPath(path))
+        setRedirectPath:  (path) => dispatch(actionCreators.setRedirectPath(path)),
+        resetButton:      ()     => dispatch(actionCreators.resetButton())
     };
 };
 

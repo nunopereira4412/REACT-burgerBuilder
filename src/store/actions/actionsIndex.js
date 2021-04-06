@@ -1,7 +1,8 @@
 export {
     storeIngredients,
     addIng,
-    removeIng
+    removeIng,
+    resetButton
 }                           from './burgerBuilder';
 
 export {
